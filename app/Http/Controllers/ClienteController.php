@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\producto;
+use App\Models\cliente;
 use Illuminate\Http\Request;
 
-class ProductoController extends Controller
+class ClienteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +13,8 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        $datos["productos"]=producto::paginate(4);
-        return view("producto/index",$datos);
+        $datos["cliente"]=cliente::paginate(4);
+        return view("cliente/index",$datos);
     }
 
     /**
@@ -23,7 +23,7 @@ class ProductoController extends Controller
     public function create()
     {
         //
-        return view("producto/crear");
+        return view("cliente/crear");
     }
 
     /**
@@ -33,16 +33,13 @@ class ProductoController extends Controller
     {
         //
         $campos=[
-            'nombre'=> 'required|string',
-            'referencia'=> 'required|string',
-            'descripcion'=> 'required|string',
-            'precio'=> 'required|numeric',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
+            'telefono' => 'required|string',
+            'correo' => 'required|string'
         ];
-
         $mensaje=[ 
-            'required'=> ":attribute Obligatorio",
-            'precio.required'=> "Precio Debe ser Numerico"
-        
+            'required'=> ":attribute Obligatorio"
         ];
 
         $validateData=$request->validate($campos, $mensaje);
@@ -51,14 +48,14 @@ class ProductoController extends Controller
         $datos= request()->except("_token");
         //dd($datos);
         $datos["uid"]=$uid;
-        producto::insert($datos);     
-        return redirect('producto');
+        cliente::insert($datos);     
+        return redirect('cliente');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(producto $producto)
+    public function show(cliente $cliente)
     {
         //
     }
@@ -69,29 +66,28 @@ class ProductoController extends Controller
     public function edit($id)
     {
         //
-        $datos['producto']=producto::find($id);
-        return view("producto.editar",$datos);
-        
+        $datos['cliente']=cliente::find($id);
+        return view("cliente.editar",$datos);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,  $id)
     {
         //
         $datos= request()->except("_token","_method");
-        producto::where("id",$id)->update($datos);
-        return redirect('producto');
+        cliente::where("id",$id)->update($datos);
+        return redirect('cliente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($producto)
+    public function destroy($cliente)
     {
         //
-        producto::where('id',$producto)->delete();
-        return redirect('producto');
+        cliente::where('id',$cliente)->delete();
+        return redirect('cliente');
     }
 }
