@@ -76,6 +76,18 @@ class ClienteController extends Controller
     public function update(Request $request,  $id)
     {
         //
+        $campos=[
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
+            'telefono' => 'required|string',
+            'correo' => 'required|string'
+        ];
+        $mensaje=[ 
+            'required'=> ":attribute Obligatorio"
+        ];
+
+        $validateData=$request->validate($campos, $mensaje);
+
         $datos= request()->except("_token","_method");
         cliente::where("id",$id)->update($datos);
         return redirect('cliente');
